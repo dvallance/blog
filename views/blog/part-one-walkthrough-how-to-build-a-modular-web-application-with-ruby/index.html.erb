@@ -1,0 +1,148 @@
+<div id="post">
+	<div class="date"><span>Posted on</span> 18 March 2012</div>
+	<h1>Part One: Walk-through, How to Build a Modular Web Application with Ruby</h1>
+	<div class="post-body">
+		<p>I don&#8217;t want to repeat what others have already explained in detail, so where appropriate I will point you to other articles. I will simply try and fill in any gaps and describe specific stuff that tripped me up when I was learning.</p>
+		<h2>What Are We Building Again?</h2>
+		<p>We&#8217;ll be building, in a very modular way, a simple &#8220;note&#8221; taking web application.</p>
+		<p>The focus will be on how to build the app and not so much on the end functionality. The purpose is to learn how and break it up into pieces, that are created and tested in isolation; in other words, how to make it in a modular way ;)</p>
+		<h2>First Key to Being Modular = Sharing Code = RubyGems</h2>
+		<p>Understanding how to build a gem is the key to shareable code, and that is how I packaged the first piece of our application; as a gem.</p>
+		<p>See <a href="http://en.wikipedia.org/wiki/RubyGems" title="Wikipedia Link">Whats a RubyGem?</a></p>
+		<p>Lets start by taking a look at the gem I built.</p>
+		<h2>Preparation/Setup</h2>
+		<p>You&#8217;ll need the following installed/working&#8230;</p>
+		<ul>
+			<li><em>Ruby Environment</em> &#8211; I&#8217;m developing against Ruby 1.9.2 so I can&#8217;t guarantee things will work in prior versions. If your not using a Ruby Version Management Tool, checkout out either <a href="http://beginrescueend.com" title="Visit RVM"><span class="caps">RVM</span></a> or <a href="https://github.com/sstephenson/rbenv" title="Visit rbenv">rbenv</a>, they both allow you to change your Ruby environment on a per project basis.</li>
+			<li><em>MongoDB</em> &#8211; We will be using <a href="http://www.mongodb.org" title="Visit MongoDB">MongoDB</a> as the back-end database. View the <a href="http://www.mongodb.org/display/DOCS/Quickstart">Quickstart</a> section, and select your operating system to get up and running. Don&#8217;t worry if you haven&#8217;t used a document database before, as we will be using an <span class="caps">API</span> that is very similar to ActiveRecord.</li>
+			<li>Git &#8211; To get the code.</li>
+		</ul>
+		<h2>Checkout My Gem&#8217;s Code</h2>
+		<p>Start by cloning the repository and running the tests.</p>
+		<ul>
+			<li>git clone git://github.com/dvallance/MongoidModels.git</li>
+			<li>cd MongoidModels</li>
+			<li>(sudo) gem install bundler &#8211; if not already installed</li>
+			<li>bundle install</li>
+			<li>bundle exec guard</li>
+			<li>hit the return key to activate the full test suit</li>
+			<li>e return &#8211; will exit from guard</li>
+		</ul>
+		<h2>Describing the Directory Structure</h2>
+<pre><code>MongoidModels
+|~lib/
+| |~mongoid_models/
+| | |~models/
+| | | |-document.rb
+| | | `-user.rb
+| |  `-version.rb
+| `-mongoid_models.rb
+|+mulit_json/
+|+test/
+|-Gemfile
+|-Gemfile.lock
+|-Guardfile
+|-mongoid_models.gemspec
+`-README.textile</code></pre>
+		<p>The <em>mongoid_models.gemspec</em> file and the <em>lib</em> directory (and its contents) are the files used for the ruby gem. All other files are used in the development and testing of the gem itself. There is already an excellent article describing the creation and makeup of a ruby gem so I won&#8217;t repeat it here.</p>
+		<p>See the article <a href="https://github.com/radar/guides/blob/master/gem-development.md" title="External Link: RubyGem Info">Developing a RubyGem using Bundler</a>.<br />
+		Also checkout the <a href="http://docs.rubygems.org/read/chapter/20">Gem Specification Reference</a>.</p>
+		<h2>The parts that tripped me up the most when developing and using a gem for the first time where these.</h2>
+		<h2>Bundle Gem Command</h2>
+		<ul>
+			<li>I didn&#8217;t use the command <em>&#8220;bundle gem new_gems_name&#8221;</em> when I first started developing gems</li>
+		</ul>
+		<p>I wish I new about this command right off the bat, as I instead tried to piece the structure together myself. After referencing some existing gems on Github, I was confused as to what best practices would be; with regard to file naming and directory structure. The command handles all of that for you by providing a complete skeleton. In addition it sets up git and your .gemspec file.</p>
+		<p>Not using the command lead me to discover the importance of the <em>gemspec</em> method.</p>
+<pre><code>#in Gemfile 
+gemspec #a very important line when developing your gem</code></pre>
+		<p>That method lets the gem dependencies know to use the code I was writing. Not having that declared lead to issues when trying to require ruby files in my project. Thankfully, using the <em>bundle gem</em> command adds this for you ;)</p>
+		<h2>The Load Path</h2>
+		<ul>
+			<li>Speaking of requiring ruby files, the load path was a mysterious thing to me</li>
+		</ul>
+		<p>Understanding how the ruby load path works, both while developing the gem and then when using it, proved another challenging part for me. Coming from the &#8220;Rails&#8221; framework, where it autoloads all your classes if you place them in the default locations (i.e. models, views, controllers), I never had to give much thought to it.</p>
+		<p>Heres a good article explaining the load path <a href="http://weblog.rubyonrails.org/2009/9/1/gem-packaging-best-practices/">Gem Packaging: Best Practices</a>.</p>
+		<p>If you have trouble declaring and finding paths when using &#8220;require&#8221; it is probably because your load path doesn&#8217;t have the root directory you think it does. You can see the load path with the global variable <em>$<span class="caps">LOAD</span></em><span class="caps">PATH</span> or just <em>$:</em>.</p>
+		<p>Printing out this value helped me immensely early on.</p>
+<pre><code>p $LOAD_PATH #print out the load paths in the console 
+puts $LOAD_PATH #print out the load inside a test</code></pre>
+		<h2>The Console</h2>
+		<ul>
+			<li>Using the console to test/inspect code</li>
+		</ul>
+		<p>You&#8217;re on your own when creating a gem. Theres no easy &#8220;rake rails console&#8221; command to load up the environment for you. As far as I have figured out, you simple have to start <acronym title="Interactive Ruby Shell"><span class="caps">IRB</span></acronym> and load all the libraries you want manually.</p>
+		<p>What I did was created a little helper method to quickly get everything I needed setup in the console.</p>
+<pre><code>#in the lib/mongoid_models.rb file
+	def irb_helper
+		require 'ruby-debug'
+		#to allow me to use the debugger</code>
+
+<code>    ENV['RACK_ENV'] = 'development'
+		#used by mongoid when loading the database config options</code>
+
+<code>    require 'mongoid_models'
+		#the loading entry point for our code</code>
+
+<code>    include MongoidModels
+		#show we can reference without full namespace declaration
+		#i.e. User not MongoidModels::User</code>
+
+<code>    Mongoid.load!("test/mongoid.yml)  
+		#config options for mongoid
+	end</code></pre>
+		<p>So as an example if you are in the root of my cloned repository (MongoidModels) you would do the following.</p>
+<pre><code>bundle exec irb -I lib
+#bundle exec makes sure our code is within context
+#as it uses the Gemfile and hence reads the _gemspec_
+#line I mentioned earlier.</code>
+
+<code>#the '-I lib' option puts the /lib directory on the
+#$LOAD_PATH which lets us then...</code>
+
+<code>require "mongoid_models" 
+#does additional require calls internally and gives
+#us access to the irb_helper method</code>
+
+<code>irb_helper
+#gets us totally ready to use our models</code></pre>
+		<h2>Additional Notes on the Console</h2>
+		<p>The console (or <span class="caps">IRB</span>) is a great way to examine and play with code, and it can also be enhanced by <a href="https://github.com/janlelis/irbtools" title="irbtools Github link">irbtools</a>. I&#8217;m currently in the process of learning its features and I will either write about it or point you to better documentation in the future.</p>
+		<p>There is also an alternative to <span class="caps">IRB</span>, which is <a href="http://pry.github.com/" title="Prys Homesite Link">Pry</a>. It has some pretty neat features!</p>
+		<h2>Running Tests</h2>
+		<p>Minitest, which is baked into ruby 1.9, is fantastic and that is what I&#8217;ve used to test this gem; that along with guard, which simplifies running the tests.</p>
+		<p>Read about <a href="https://github.com/seattlerb/minitest" title="Minitest Github Link">Minitest</a> and <a href="https://github.com/guard/guard" title="Guard Github Link">Guard</a>.</p>
+		<p><strong>Note</strong>: Minitest also supports RSpec <em>should</em> excpetation syntax if thats your thing (but personally I find it a lot less intuative).</p>
+		<h2>Debugging</h2>
+		<p>I&#8217;m going to save this for it&#8217;s own topic later on as I feel I don&#8217;t have the best grasp of how to enter a debugging session. It&#8217;s on my list of areas to improve.</p>
+		<h2>Final Note</h2>
+		<p>I didn&#8217;t actually get into any specific detail about the code I created, as I wanted to keep the gem creation process as the emphasise of this article. Why I choose to use MongoDB and the Mongoid gem, might be something I write about later, but I certainly will explain how this gem will be incorporate into our overall application. Until then thanks for reading.</p>
+		<h2>Sections</h2>
+		<p><a href="/blog/walkthrough-how-to-build-a-modular-web-application-intro" title="Visit Introduction">Introduction</a> &#8211; A walk-through approach as I build a ruby web application. The application will attempt to be very modular; separating areas of concern into smaller manageable pieces. I will be dealing with Gemifying smaller rack apps, using MongoDB as the back-end database and applying heavy use of javascript and ajax calls in the view layer(s). I intend this to be a learning experience and welcome feedback.</p>
+		<p><a href="/blog/part-one-walkthrough-how-to-build-a-modular-web-application-with-ruby" title="Visit Part One">Part One</a> &#8211; In part one we will build and gemify our models. I will discuss the tools involved, how to get started, and how to inspect and test what we have. This is my approach and I certainly don&#8217;t claim that it is the best. Hopefully we can get some discussion going and we can all learn and improve.</p>
+		<p>Part Two &#8211; Coming soon.</p>
+	</div>
+	<div class="back">
+		<a href="previous.html" onClick="history.back();return false;">finished reading</a>
+	</div>
+	<br/>
+	<br/>
+	<br/>
+	<div id="disqus_thread"></div>
+</div>
+<script type="text/javascript">
+	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+var disqus_developer = <%= settings.development? ? 1 : 0 %>
+var disqus_shortname = 'davidvallance'; // required: replace example with your forum shortname
+var disqus_identifier = '/blog/part-one-walkthrough-how-to-build-a-modular-web-application-with-ruby';
+//var disqus_developer = 1; // developer mode is on
+var disqus_title = 'Part One: Walk-through, How to Build a Modular Web Application with Ruby';
+/* * * DON'T EDIT BELOW THIS LINE * * */
+(function() {
+ var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+ dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+ (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+ })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>

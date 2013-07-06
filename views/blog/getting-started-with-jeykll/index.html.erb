@@ -1,0 +1,68 @@
+		<div id="post">
+			<div class="date"><span>Posted on</span> 17 February 2012</div>
+			<h1>Getting Started With Jeykll</h1>
+			<div class="post-body">
+				<p>When I decided to create this site I wanted to try out a static site generator. I chose to use Jeykll.</p>
+				<h2>Why Jeykll?</h2>
+				<ol>
+					<li>I already live in the ruby world, so I wanted an easy to install gem.</li>
+					<li>According to <a href="http://www.ruby-toolbox.com" title="The Ruby Toolbox">The Ruby Toolbox</a>, Jekyll was a popular choice (to me that means it&#8217;s doing something right).</li>
+					<li>After a quick glance at its documentation, I liked its simplistic appoach.</li>
+					<li>Supports the Textile markup language (which I&#8217;m familier with and like).</li>
+					<li>Supports the Markdown markup language (which I wanted to try out).</li>
+					<li>Uses the Liquid templating engine (which I also wanted to try).</li>
+				</ol>
+				<h2>Starting Out</h2>
+				<p>In all honestly as simple as Jeykll is (once you&#8217;ve figured it out), I didn&#8217;t find it documented well. By that I mean it did&#8217;t really have a good &#8220;how to get started&#8221; area. The documentation is complete but not organized well and I felt it was definately a &#8220;look at the code&#8221; and &#8220;look at sample sites&#8221; to figure things out.</p>
+				<p>As a starting point, I don&#8217;t like grabbing someone else&#8217;s code and working off of it. I prefer to build everything from scratch; so thats how I started. After I created the basic site structure I was ready to start building the layouts and pages.</p>
+<pre><code>(example directory structure) 
+.
+|-- _config.yml
+|-- _includes
+|-- _layouts
+|-- _posts
+|-- _site
+|-- index.html</code></pre>
+				<h2>Adding Pages, Layouts and Posts</h2>
+				<p>This is where I started down the wrong path and I had a fustrating beginning. I assumed that the layouts could be created in one of the supported markup languages, but I believe they can&#8217;t or at least I haven&#8217;t figured out how.</p>
+				<p>The documentation says:</p>
+				<blockquote>
+					<p>Provided that the file has a <span class="caps">YAML</span> Front Matter section, it will be transformed by Jekyll. The same will happen for any .html, .markdown, or .textile file in your site&#8217;s root directory or directories not listed above.</p>
+				</blockquote>
+				<p>It&#8217;s hard to interprete the &#8220;directories not listed above&#8221; part, since _posts is &#8220;listed above&#8221; and works, but _layouts is also &#8220;listed above&#8221; but doesn&#8217;t seem to. I looked through about 5 or 6 sample sites and all of them had .html layout pages. So, again I assume you can&#8217;t use markup for layouts.</p>
+				<p>The bad start continued as a few syntax errors on my part also caused some issues and I was really stumbling around trying to figure out why things weren&#8217;t working. I wasn&#8217;t feeling to great about my decision to go with Jeykll at this point.</p>
+				<h2>Pushing Forward</h2>
+				<p>I knew that there was a &#8220;programming&#8221; element to Jeykll and that through Liquid I would be able to list posts and access there data, but being new to both Jeykll and Liquid I wasn&#8217;t sure how to begin. Unfortuately I missed finding the &#8220;Template Data&#8221; section in the offical documentation and I relied more on looking through other site examples to figure out what I had access to. Again I wish the documention lead you through the process better.</p>
+				<p>Finally I had figured out enough to get things working, and after finding the proper section on the Template Data I was off to the races.</p>
+				<h2>Where Do I Stand Now?</h2>
+				<p>Well I have to say that, even after a rocky start, I do like Jeykll. I continue to like Textile but Markdown never really did it for me (information on creating attributes with markdown is not easily found, if you can?).</p>
+				<h2>Continuing</h2>
+				<p>I need to figure out the naming conventions on posts, as I don&#8217;t like the date being a part of the file name itself (removing the date caused the post to not be detected at all). I also need to look at how tags and related posts work, so thats what I will be looking at next. Until then I have a pretty nice start to my new site and understanding Jeykll better.</p>
+				<p>I will follow up with another post when I&#8217;ve learned more.</p>
+			</div>
+			<div class="back">
+				<a href="previous.html" onClick="history.back();return false;">finished reading</a>
+			</div>
+			<br/>
+			<br/>
+			<br/>
+			<div id="disqus_thread"></div>
+		</div>
+		<script type="text/javascript">
+			/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+		var disqus_developer = <%= settings.development? ? 1 : 0 %>
+		var disqus_shortname = 'davidvallance'; // required: replace example with your forum shortname
+		var disqus_identifier = '/blog/getting-started-with-jeykll';
+		//var disqus_developer = 1; // developer mode is on
+		var disqus_title = 'Getting Started With Jeykll';
+		/* * * DON'T EDIT BELOW THIS LINE * * */
+		(function() {
+		 var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		 dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+		 (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+		 })();
+	 </script>
+	 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	 <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+ </div>

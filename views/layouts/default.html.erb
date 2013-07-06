@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <meta name="description" content="First impressions of using Jekyll the static site generator" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Getting Started With Jeykll</title>
+  <link rel="stylesheet" type="text/css" href="/css/reset.css"/>
+  <link rel="stylesheet" type="text/css" href="/css/text.css"/>
+  <link rel="stylesheet" type="text/css" href="/css/syntax.css"/>
+  <link rel="stylesheet" type="text/css" href="/css/site.css"/>
+  <link href='http://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Arvo:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <meta name="author" content="Dave Vallance" />
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-29602529-1']);
+		_gaq.push(['_setDomainName', 'davevallance.info']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+</head>
+<body>
+
+  <div id="title" class="fancy"><span class="site-title">wisethinker</span><span class="site-title-dot">.</span><span class="site-title-info">info</span>
+
+    <span id="navigation" class="navigation"><a href="/">Home</a> | Blog | <a href="https://github.com/dvallance">Projects</a></span></div>
+  <div id="content">
+		<%= yield %>
+	</div>
+
+ <div id="footer">
+	 Contact me here: <a href="mailto:dave@wisethinker.info">dave@wisethinker.info</a>
+ </div>
+</body>
+</html>
