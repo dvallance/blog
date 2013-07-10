@@ -11,9 +11,10 @@ require 'mina/rbenv'  # for rbenv support. (http://rbenv.org)
 #   branch       - Branch name to deploy. (needed by mina/git)
 
 set :domain, 'wisethinker.info'
-set :deploy_to, '/opt/webapps/davevallance.wisethinker.info'
-set :repository, 'git://dvallance/blog'
+set :deploy_to, '/opt/webapps/blog'
+set :repository, 'git@github.com:dvallance/blog.git'
 set :branch, 'master'
+set :term_mode, 'system'
 
 # Manually create these paths in shared/ (eg: shared/config/database.yml) in your server.
 # They will be linked in the 'deploy:link_shared_paths' step.
@@ -60,7 +61,8 @@ task :deploy => :environment do
     #invoke :'rails:assets_precompile'
 
     to :launch do
-      queue 'touch tmp/restart.txt'
+			queue "mkdir -p #{deploy_to}/current/tmp"
+      queue "touch #{deploy_to}/current/tmp/restart.txt"
     end
   end
 end
