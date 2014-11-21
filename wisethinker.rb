@@ -1,10 +1,13 @@
 require "rubygems"
 require "sinatra/base"
+require 'pp'
 
 class WiseThinker < Sinatra::Base
 	set :root, File.dirname(__FILE__)
 
 	get '/' do
+    pp ENV["RACK_ENV"]
+    puts 'LOADING INDEX'
 		erb :'/index.html', :layout => :'layouts/default.html'
 	end
 
@@ -19,7 +22,7 @@ class WiseThinker < Sinatra::Base
 	get '/blog/part-one-walkthrough-how-to-build-a-modular-web-application-with-ruby/?' do
 		erb :'/blog/part-one-walkthrough-how-to-build-a-modular-web-application-with-ruby/index.html', :layout => :'layouts/default.html'
 	end
-	
+
 	get '/blog/walkthrough-how-to-build-a-modular-web-application-intro/?' do
 		erb :'blog/walkthrough-how-to-build-a-modular-web-application-intro/index.html', :layout => :'layouts/default.html'
 	end
